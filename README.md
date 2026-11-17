@@ -166,7 +166,7 @@ The database (`db.sqlite3`) is shipped pre-loaded with all 14 FAQs.
 
 ### If activities show as "unknown"
 
-The XAML uses classic activities for broad compatibility (Windows-Legacy target). If any activity is unrecognized, right-click → **Replace** with the modern equivalent (e.g., *Use Excel File* instead of *Excel Application Scope*), or install the missing package via **Manage Packages** (UiPath.Excel.Activities and UiPath.System.Activities are the only required ones).
+The project targets the modern **Windows** framework (.NET 6/8 runtime) compatible with UiPath Studio 24.10 / 26.10+. If any activity is unrecognized, install the missing package via **Manage Packages** (UiPath.Excel.Activities and UiPath.System.Activities are the primary required packages).
 
 ---
 

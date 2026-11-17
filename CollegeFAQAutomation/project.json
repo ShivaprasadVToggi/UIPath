@@ -1,41 +1,65 @@
 {
   "name": "CollegeFAQAutomation",
+  "projectId": "85966458-7561-460d-83cb-980b1cb3b171",
   "description": "UiPath automation that reads CollegeFAQ.xlsx, accepts a keyword via Input Dialog, and displays the matching FAQ answer.",
-  "projectType": "Workflow",
-  "libraryOptions": null,
-  "templateProjectId": null,
-  "mainFile": "Main.xaml",
-  "entryPoints": [
-    {
-      "filePath": "Main.xaml",
-      "uniqueId": "MainWorkflow",
-      "inputs": null,
-      "outputs": null
-    }
-  ],
-  "webServices": [],
-  "activitiesDependencies": [],
+  "main": "Main.xaml",
   "dependencies": {
-    "UiPath.Excel.Activities": "[2.12.3]",
-    "UiPath.System.Activities": "[23.10.1]",
-    "UiPath.UIAutomation.Activities": "[23.10.1]",
-    "UiPath.Mail.Activities": "[1.18.2]"
+    "UiPath.Excel.Activities": "[3.6.1]",
+    "UiPath.Mail.Activities": "[2.12.10]",
+    "UiPath.System.Activities": "[26.10.0]",
+    "UiPath.UIAutomation.Activities": "[26.10.7]"
+  },
+  "webServices": [],
+  "entitiesStores": [],
+  "schemaVersion": "4.0",
+  "studioVersion": "26.10.0.0",
+  "projectVersion": "1.0.0",
+  "runtimeOptions": {
+    "autoDispose": false,
+    "netFrameworkLazyLoading": false,
+    "isPausable": true,
+    "isAttended": false,
+    "requiresUserInteraction": true,
+    "supportsPersistence": false,
+    "workflowSerialization": "DataContract",
+    "excludedLoggedData": [
+      "Private:*",
+      "*password*"
+    ],
+    "executionType": "Workflow",
+    "readyForPiP": false,
+    "startsInPiP": false,
+    "mustRestoreAllDependencies": true,
+    "pipType": "ChildSession"
+  },
+  "designOptions": {
+    "projectProfile": "Developement",
+    "outputType": "Process",
+    "libraryOptions": {
+      "includeOriginalXaml": false,
+      "privateWorkflows": []
+    },
+    "processOptions": {
+      "ignoredFiles": []
+    },
+    "fileInfoCollection": [],
+    "modernBehavior": true
   },
   "arguments": {
     "input": [],
     "output": []
   },
   "expressionLanguage": "VisualBasic",
-  "storedCredentials": [],
-  "runtimeRule": "Low",
-  "isPublishing": false,
-  "readyToRun": false,
-  "projectVersion": "1.0.0",
-  "runtime": {
-    "targetFramework": "Windows-Legacy",
-    "pipeline": "Windows-Legacy"
-  },
-  "schemaVersion": "4.0",
-  "creationTime": "2024-01-15T10:00:00Z",
-  "toolVersion": "23.10.1"
+  "entryPoints": [
+    {
+      "filePath": "Main.xaml",
+      "uniqueId": "b7c8e9f0-1234-4567-89ab-cdef01234567",
+      "input": [],
+      "output": []
+    }
+  ],
+  "isTemplate": false,
+  "templateProjectData": {},
+  "publishData": {},
+  "targetFramework": "Windows"
 }
