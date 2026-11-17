@@ -47,10 +47,10 @@
                   Text="[&quot;Total FAQ rows loaded from Excel: &quot; + dtFAQ.Rows.Count.ToString]" />
 
     <!-- 3. Read CSV + String.Join output demo -->
-    <excel:ReadCsvFile DisplayName="Read CSV: faq_data.csv"
-                       FilePath="faq_data.csv"
-                       DataTable="[dtCSV]"
-                       IncludeColumnName="True" />
+    <excel:ReadCsv DisplayName="Read CSV: faq_data.csv"
+                   FileName="faq_data.csv"
+                   DataTable="[dtCSV]"
+                   IncludeColumnNames="True" />
     <ui:Assign DisplayName="Assign: csvDemoOutput = String.Join(...)"
                To="[csvDemoOutput]"
                Value="[String.Join(&quot; | &quot;, dtCSV.AsEnumerable().Select(Function(r) r(&quot;Question&quot;).ToString()).ToArray())]" />

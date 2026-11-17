@@ -138,9 +138,35 @@ The database (`db.sqlite3`) is shipped pre-loaded with all 14 FAQs.
 9. Run again and type `xyzzy123` → you should see **"No matching answer found / Invalid Category"**.
 10. Confirm variables exist in Main scope with the correct types (Variables panel).
 
+### Opening CollegeFAQAutomation in UiPath Studio on Windows (from GitHub)
+
+**Method 1 — Clone Repository inside UiPath Studio (recommended):**
+
+1. Install **UiPath Studio** (Community Edition, free) from https://www.uipath.com/developers/studio.
+2. Launch Studio. On the start screen, sign in with your UiPath account (same as https://cloud.uipath.com/ — use Google / Microsoft / email SSO).
+3. On the Studio start screen, go to **Team** (left sidebar) → **Git** → **Clone Repository**.
+4. Paste the repository URL: `https://github.com/ShivaprasadVToggi/UIPath.git`
+5. Choose a local folder (e.g. `C:\Users\You\Documents\UiPath\UIPath`). If prompted for credentials, enter your GitHub username and a **Personal Access Token** (Settings → Developer settings → Personal access tokens → Tokens (classic), scope `repo`) as the password.
+6. Studio clones the repo and detects `CollegeFAQAutomation/project.json`. Click **Open Project**.
+7. Wait for NuGet packages to restore (UiPath.Excel.Activities, UiPath.System.Activities, UiPath.UIAutomation.Activities). The Output panel shows "Packages restored".
+8. Open `Main.xaml` from the Project panel. Confirm no red validation errors.
+9. Press **F5** (Debug) to run. The Input Dialog appears — type `college located` or `VisitorFAQ` → answer shows in a Message Box.
+
+**Method 2 — Open project.json directly:**
+
+1. `git clone https://github.com/ShivaprasadVToggi/UIPath.git` (or download ZIP from GitHub).
+2. In UiPath Studio: **Open** → browse to `UIPath/CollegeFAQAutomation/project.json` → Open.
+3. Studio loads the project; restore packages if prompted.
+
+**Signing into UiPath Automation Cloud (cloud.uipath.com):**
+
+- Cloud portal: https://cloud.uipath.com/ — sign in with the same account used in Studio.
+- Once signed in, you can access **Orchestrator** (tenant → Orchestrator) to publish & run robots, and **Studio Web** (browser-based Studio) to edit workflows from any machine.
+- To publish this project to Orchestrator: in Studio → **Publish** → choose your Orchestrator tenant as the publish target. The process then appears under Orchestrator → Processes.
+
 ### If activities show as "unknown"
 
-The XAML uses classic activities for broad compatibility. If any activity is unrecognized, right-click → **Replace** with the modern equivalent (e.g., *Use Excel File* instead of *Excel Application Scope*), or install the missing package via **Manage Packages**.
+The XAML uses classic activities for broad compatibility (Windows-Legacy target). If any activity is unrecognized, right-click → **Replace** with the modern equivalent (e.g., *Use Excel File* instead of *Excel Application Scope*), or install the missing package via **Manage Packages** (UiPath.Excel.Activities and UiPath.System.Activities are the only required ones).
 
 ---
 
