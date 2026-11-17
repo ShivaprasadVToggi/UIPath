@@ -24,6 +24,11 @@ staticfiles/
 Thumbs.db
 
 # UiPath
+.local/
+.objects/
+.project/
+.settings/
+.tmh/
 .vs/
 obj/
 bin/
