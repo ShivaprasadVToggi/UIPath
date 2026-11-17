@@ -1,0 +1,41 @@
+{
+  "name": "CollegeFAQAutomation",
+  "description": "UiPath automation that reads CollegeFAQ.xlsx, accepts a keyword via Input Dialog, and displays the matching FAQ answer.",
+  "projectType": "Workflow",
+  "libraryOptions": null,
+  "templateProjectId": null,
+  "mainFile": "Main.xaml",
+  "entryPoints": [
+    {
+      "filePath": "Main.xaml",
+      "uniqueId": "MainWorkflow",
+      "inputs": null,
+      "outputs": null
+    }
+  ],
+  "webServices": [],
+  "activitiesDependencies": [],
+  "dependencies": {
+    "UiPath.Excel.Activities": "[2.12.3]",
+    "UiPath.System.Activities": "[23.10.1]",
+    "UiPath.UIAutomation.Activities": "[23.10.1]",
+    "UiPath.Mail.Activities": "[1.18.2]"
+  },
+  "arguments": {
+    "input": [],
+    "output": []
+  },
+  "expressionLanguage": "VisualBasic",
+  "storedCredentials": [],
+  "runtimeRule": "Low",
+  "isPublishing": false,
+  "readyToRun": false,
+  "projectVersion": "1.0.0",
+  "runtime": {
+    "targetFramework": "Windows-Legacy",
+    "pipeline": "Windows-Legacy"
+  },
+  "schemaVersion": "4.0",
+  "creationTime": "2024-01-15T10:00:00Z",
+  "toolVersion": "23.10.1"
+}

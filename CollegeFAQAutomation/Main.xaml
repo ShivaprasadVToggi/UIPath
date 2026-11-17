@@ -1,0 +1,117 @@
+<Activity mc:Ignorable="sap sap2010 sads" x:Class="Main"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:system="clr-namespace:System;assembly=mscorlib"
+ xmlns:systemData="clr-namespace:System.Data;assembly=System.Data"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:excel="clr-namespace:UiPath.Excel.Activities;assembly=UiPath.Excel.Activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Sequence DisplayName="Main Sequence" sap2010:Annotation.AnnotationText="College Enquiry System - reads FAQ Excel, asks for keyword, displays matching answer">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:Boolean" Name="answerFound" Default="[False]" />
+      <Variable x:TypeArguments="systemData:DataTable" Name="dtFAQ" />
+      <Variable x:TypeArguments="x:String" Name="searchKeyword" />
+      <Variable x:TypeArguments="systemData:DataTable" Name="dtCSV" />
+      <Variable x:TypeArguments="x:String" Name="csvDemoOutput" />
+    </Sequence.Variables>
+
+    <!-- 1. Use Excel File (CollegeFAQ.xlsx) -> Read Range Sheet1, Has headers = True -> dtFAQ -->
+    <excel:ExcelApplicationScope DisplayName="Use Excel File: CollegeFAQ.xlsx"
+                                 WorkbookPath="CollegeFAQ.xlsx"
+                                 Visible="False"
+                                 CreateNewFile="False"
+                                 ReadOnly="True"
+                                 AutoSave="True">
+      <excel:ExcelApplicationScope.Body>
+        <ActivityAction>
+          <ActivityAction.Handler>
+            <Sequence DisplayName="Excel Activities Sequence">
+              <excel:ReadRange DisplayName="Read Range: Sheet1"
+                               SheetName="Sheet1"
+                               AddHeaders="True"
+                               Range=""
+                               DataTable="[dtFAQ]" />
+            </Sequence>
+          </ActivityAction.Handler>
+        </ActivityAction>
+      </excel:ExcelApplicationScope.Body>
+    </excel:ExcelApplicationScope>
+
+    <!-- 2. Write Line: display row count -->
+    <ui:WriteLine DisplayName="Write Line: Row Count"
+                  Text="[&quot;Total FAQ rows loaded from Excel: &quot; + dtFAQ.Rows.Count.ToString]" />
+
+    <!-- 3. Read CSV + String.Join output demo -->
+    <excel:ReadCsvFile DisplayName="Read CSV: faq_data.csv"
+                       FilePath="faq_data.csv"
+                       DataTable="[dtCSV]"
+                       IncludeColumnName="True" />
+    <ui:Assign DisplayName="Assign: csvDemoOutput = String.Join(...)"
+               To="[csvDemoOutput]"
+               Value="[String.Join(&quot; | &quot;, dtCSV.AsEnumerable().Select(Function(r) r(&quot;Question&quot;).ToString()).ToArray())]" />
+    <ui:WriteLine DisplayName="Write Line: CSV Questions Demo"
+                  Text="[&quot;CSV demo - all questions: &quot; + csvDemoOutput]" />
+
+    <!-- 4. Input Dialog: ask for keyword / question / category -->
+    <ui:InputDialog DisplayName="Input Dialog: College Enquiry"
+                    Title="College Enquiry System"
+                    Label="Enter keyword, question, VisitorFAQ or StudentFAQ:"
+                    Result="[searchKeyword]"
+                    InputType="Text" />
+
+    <!-- 5. Assign: answerFound = False -->
+    <ui:Assign DisplayName="Assign: answerFound = False"
+               To="[answerFound]"
+               Value="[False]" />
+
+    <!-- 6. For Each Row in Data Table (dtFAQ), item name: CurrentRow -->
+    <ui:ForEachRow DisplayName="For Each Row in Data Table: dtFAQ"
+                   DataTable="[dtFAQ]">
+      <ui:ForEachRow.Body>
+        <ActivityAction x:TypeArguments="systemData:DataRow">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="systemData:DataRow" Name="CurrentRow" />
+          </ActivityAction.Argument>
+          <ActivityAction.Handler>
+            <Sequence DisplayName="Row Processing Sequence">
+              <!-- If: keyword matches Question or Category (case-insensitive) -->
+              <If DisplayName="If: keyword matches Question or Category"
+                  Condition="[searchKeyword IsNot Nothing AndAlso searchKeyword.Trim().ToLower().Contains(CurrentRow(&quot;Question&quot;).ToString().ToLower()) OrElse CurrentRow(&quot;Question&quot;).ToString().ToLower().Contains(searchKeyword.Trim().ToLower()) OrElse searchKeyword.Trim().ToLower().Equals(CurrentRow(&quot;Category&quot;).ToString().ToLower()) OrElse CurrentRow(&quot;Category&quot;).ToString().ToLower().Contains(searchKeyword.Trim().ToLower())]">
+                <If.Then>
+                  <Sequence DisplayName="Match Found Sequence">
+                    <ui:MessageBox DisplayName="Message Box: Show Answer"
+                                   Text="[CurrentRow(&quot;Answer&quot;).ToString()]"
+                                   Caption="College FAQ Answer"
+                                   Buttons="OK"
+                                   ChosenButton="{x:Null}" />
+                    <ui:Assign DisplayName="Assign: answerFound = True"
+                               To="[answerFound]"
+                               Value="[True]" />
+                  </Sequence>
+                </If.Then>
+              </If>
+            </Sequence>
+          </ActivityAction.Handler>
+        </ActivityAction>
+      </ui:ForEachRow.Body>
+    </ui:ForEachRow>
+
+    <!-- 7. After loop: If Not answerFound -> Message Box -->
+    <If DisplayName="If: Not answerFound"
+        Condition="[Not answerFound]">
+      <If.Then>
+        <ui:MessageBox DisplayName="Message Box: No Match"
+                       Text="No matching answer found / Invalid Category"
+                       Caption="College Enquiry System"
+                       Buttons="OK"
+                       ChosenButton="{x:Null}" />
+      </If.Then>
+    </If>
+
+  </Sequence>
+</Activity>

@@ -1,0 +1,76 @@
+{% extends 'faq/base.html' %}
+{% block title %}Home - CollegeFAQ{% endblock %}
+
+{% block content %}
+<div class="hero-banner">
+    <h1>YOUR QUESTIONS, ANSWERED</h1>
+    <p>How can we help you?</p>
+</div>
+
+<div class="container">
+    <!-- Search & Filter -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="{% url 'home' %}" class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label fw-semibold">Search FAQs</label>
+                    <input type="text" class="form-control" name="q" placeholder="Type keywords to search..." value="{{ query }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Choose FAQ category</label>
+                    <select class="form-select" name="category">
+                        {% for cat in categories %}
+                        <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary flex-fill">Search</button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary flex-fill">Clear</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FAQ List -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Frequently Asked Questions</h4>
+        <a href="{% url 'manage_faqs' %}" class="btn btn-outline-primary btn-sm">Manage FAQs &rarr;</a>
+    </div>
+
+    {% if faqs %}
+        {% for faq in faqs %}
+        <div class="faq-card d-flex justify-content-between align-items-center">
+            <div class="flex-grow-1 me-3">
+                <span class="badge bg-info text-dark badge-category me-2">{{ faq.category }}</span>
+                <strong>{{ faq.question }}</strong>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#faqModal{{ faq.id }}">
+                View Answer
+            </button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="faqModal{{ faq.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ faq.question }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span class="badge bg-info text-dark badge-category mb-2">{{ faq.category }}</span>
+                        <p class="mb-0">{{ faq.answer }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-warning">No FAQs found matching your search. Try different keywords or clear the filter.</div>
+    {% endif %}
+</div>
+{% endblock %}

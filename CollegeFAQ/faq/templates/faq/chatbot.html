@@ -1,0 +1,56 @@
+{% extends 'faq/base.html' %}
+{% block title %}Chatbot - CollegeFAQ{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-1">College Enquiry Chatbot</h2>
+    <p class="text-muted mb-4">Ask any question about admissions, hostels, fees, timings, and more.</p>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                <div class="chat-bubble chat-bot">
+                    👋 Hello! I'm the CollegeFAQ assistant. Ask me anything about the college.
+                </div>
+                {% if user_question %}
+                <div class="chat-bubble chat-user">{{ user_question }}</div>
+                    {% if answer %}
+                    <div class="chat-bubble chat-bot">
+                        <strong>Q: {{ matched_question }}</strong><br>
+                        {{ answer }}
+                    </div>
+                    {% else %}
+                    <div class="chat-bubble chat-bot chat-unavailable">
+                        Sorry, answer unavailable for your question. Please try different keywords or contact the college office at +91-80-1234-5678.
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- Input -->
+            <form method="post" action="{% url 'chatbot' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" class="form-control" name="question"
+                           placeholder="Type your question here..." required
+                           value="{{ user_question }}">
+                    <button type="submit" class="btn btn-primary">Ask Question</button>
+                </div>
+            </form>
+
+            <div class="mt-3 text-center">
+                <small class="text-muted">Try: "Where is the college located?" | "hostel" | "admission documents" | "office timings"</small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Auto-scroll chat to bottom
+    const chatArea = document.getElementById('chatArea');
+    if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+</script>
+{% endblock %}
